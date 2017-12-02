@@ -2,9 +2,11 @@
   "name": "mongo-prometheus",
   "description": "Mongo to Prometheus connector",
   "version": "0.1.0",
-  "homepage": "https://rj.masiko.me",
   "main": "build/MongoPrometheus.js",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rjmasikome/mongo-prometheus.git"
+  },
   "keywords": [
     "mongo",
     "prometheus",
@@ -15,7 +17,6 @@
     "email": "rj@masiko.me"
   },
   "contributors": [],
-  "bugs": {},
   "directories": {
     "test": "test/"
   },
@@ -44,5 +45,9 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
     "typescript": "^2.6.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/rjmasikome/mongo-prometheus/issues"
+  },
+  "homepage": "https://github.com/rjmasikome/mongo-prometheus#readme"
 }
