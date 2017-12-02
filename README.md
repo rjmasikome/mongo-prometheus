@@ -21,7 +21,8 @@ const {MongoPrometheus} = require("mongo-prometheus");
 const config = {
   database: "test",
   collection: "requests",
-  job: "mongo-prometheus"
+  job: "mongo-prometheus",
+  defaultMetrics: true
 };
 
 const etl = (data, next) => {
@@ -36,6 +37,7 @@ const etl = (data, next) => {
 
 new MongoPrometheus(config, etl);
 ```
+* Navigate to `http://localhost:1337/metrics`
 
 Here are some more details explanation about the config.
 * `database`: database of mongo to check oplog
