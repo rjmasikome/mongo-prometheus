@@ -21,7 +21,7 @@
     "test": "test/"
   },
   "scripts": {
-    "start": "node example/index.js",
+    "start": "ts-node example/",
     "build": "npm run compile",
     "clean": "rm -rf build",
     "precompile": "npm run clean",

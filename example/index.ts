@@ -1,6 +1,6 @@
 "use strict";
 
-const {MongoPrometheus} = require("../build/MongoPrometheus");
+const {MongoPrometheus} = require("../lib/MongoPrometheus");
 const config = {
   database: "homelike",
   collection: "requests",
@@ -13,8 +13,9 @@ const etl = (data, next) => {
     value: data.total,
     type: "counter",
     label: "test"
-  }
-  next(null, record);
-}
+  };
 
-new MongoPrometheus(config, etl);
+  next(null, record);
+};
+
+const start = new MongoPrometheus(config, etl);
