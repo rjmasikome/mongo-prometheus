@@ -1,0 +1,14 @@
+build/
+node_modules/
+.idea/*
+!.idea/inspectionProfiles/
+!.idea/runConfigurations/
+!.idea/jsLinters/
+!.idea/codeStyleSettings.xml
+.vscode 
+logs
+coverage
+.nyc_output
+.DS_Store
+*.log
+yarn.lock

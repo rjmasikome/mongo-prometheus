@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "lib": [
+      "es2017"
+    ],
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "outDir": "build",
+    "allowJs": true
+  },
+  "include": [
+    "lib/**/*"
+  ]
+}
