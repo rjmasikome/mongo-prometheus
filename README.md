@@ -16,7 +16,7 @@ npm install mongo-prometheus
 ```
 * Initialize the class with proper config and ETL function
 ```js
-const {MongoPrometheus} = require("../build/MongoPrometheus");
+const {MongoPrometheus} = require("mongo-prometheus");
 
 const config = {
   database: "test",
