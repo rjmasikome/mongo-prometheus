@@ -28,7 +28,7 @@
     "compile": "tsc --pretty",
     "lint": "tslint lib/ test/",
     "lint:fix": "tslint --fix lib/ test/",
-    "test": "mocha test/ --recursive --exit",
+    "test": "mocha --exit --require ts-node/register 'test/**/*.ts'",
     "dev": "nodemon index.ts"
   },
   "dependencies": {
@@ -38,6 +38,7 @@
     "prom-client": "^10.2.2"
   },
   "devDependencies": {
+    "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.53",
     "eslint": "^4.12.0",
     "mocha": "^4.0.1",

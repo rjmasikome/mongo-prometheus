@@ -3,7 +3,7 @@
 import * as MongoOplog from "mongo-oplog";
 import * as Debug from "debug";
 import * as express from "express";
-import {MongoClient} from "mongodb";
+import { MongoClient } from "mongodb";
 import { Counter, Gauge, register, Histogram, Summary, Registry , collectDefaultMetrics } from "prom-client";
 
 const debug = Debug("mongo-prometheus:connector");
@@ -13,15 +13,14 @@ const DEFAULT_METRIC_KEYS: string[] = ["metric", "label", "value", "help", "type
 const REGISTER: Registry = register;
 
 interface Config {
-  metrics: string;
+  collection: string; // REQUIRED
+  database: string; // REQUIRED
   register: Registry;
   uri: string;
   oplogUri: string;
   port: number;
-  collection: string;
   job: string;
   defaultMetrics: boolean;
-  database: string;
 }
 
 export class MongoPrometheus {
@@ -34,8 +33,13 @@ export class MongoPrometheus {
   private etl: any;
   private mClient: MongoClient;
 
-  constructor(config = {}, etl: void) {
+  constructor(config = {}, etl: any) {
     this.config = config;
+    this.config.oplogUri = this.config.oplogUri || "mongodb://127.0.0.1:27017/local";
+    this.config.uri = this.config.uri || `mongodb://127.0.0.1:27017/${this.config.database}`;
+    this.config.endpoint = this.config.endpoint || "/metrics";
+    this.config.port = this.config.port || 3031;
+    this.config.job = this.config.job || "mongo_prometheus";
     this.register = this.config.register || REGISTER;
     this.metrics = {};
     this.etl = etl;
@@ -44,12 +48,12 @@ export class MongoPrometheus {
 
   _start() {
 
-    if (!this.config.collection) {
-      throw Error("No collection specified, exiting...");
+    if (!this.config.collection || !this.config.database) {
+      throw Error("No collection/database specified in config, exiting...");
     }
 
-    const oplog = MongoOplog(this.config.oplogUri || "mongodb://127.0.0.1:27017/local", { ns: `${this.config.database}.${this.config.collection}` });
-    this.mClient = MongoClient.connect(this.config.uri || `mongodb://127.0.0.1:27017/${this.config.database}`);
+    const oplog = MongoOplog(this.config.oplogUri, { ns: `${this.config.database}.${this.config.collection}` });
+    this.mClient = MongoClient.connect(this.config.uri);
 
     if (this.config.defaultMetrics) {
       collectDefaultMetrics({register: this.register});
@@ -57,11 +61,12 @@ export class MongoPrometheus {
 
     const server = express();
 
-    server.get(this.config.endpoint || "/metrics", (req, res) => {
+    server.get(this.config.endpoint, (req, res) => {
       res.set("Content-Type", this.register.contentType);
       res.end(this.register.metrics());
     });
-    server.listen(this.config.port || 3031);
+    server.listen(this.config.port);
+    debug(`Prometheus client is running on port ${this.config.port} at path ${this.config.endpoint}`);
 
     oplog.tail();
 
